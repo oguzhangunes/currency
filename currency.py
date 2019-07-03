@@ -161,7 +161,7 @@ class currency():
 
                     conn = sqlite3.connect(self.db_file)
                     df2.to_sql('df2', conn, index=False, if_exists='replace')
-                    query = 'insert into df select * from df2'
+                    query = 'PRAGMA table_info(['+df+'])';#'insert into df select * from df2'
                     c = conn.cursor()
                     c.execute(query)
                     conn.commit()
