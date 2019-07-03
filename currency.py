@@ -114,7 +114,7 @@ class currency():
             conn.commit()
 
     def insert_old_data(self, begin_date, base_curr):
-        day_count = (date.strptime(begin_date, '%Y-%m-%d').date() - self.start_date ).days  #calculate number of days required to insert before start_date
+        day_count = (datetime.strptime(begin_date, '%Y-%m-%d').date() - self.start_date ).days  #calculate number of days required to insert before start_date
         df2 = pd.DataFrame()
         if day_count > 0:
             for i in range(0, day_count):
