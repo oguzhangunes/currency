@@ -130,7 +130,7 @@ class currency():
             query = 'select * from df2' #'insert into df select * from df2'
             c = conn.cursor()
             c.execute(query)
-            rows = c.fethall()
+            rows = c.fetchall()
             for row in rows:
                 print(row)
             conn.commit()
