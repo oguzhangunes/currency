@@ -128,7 +128,19 @@ class currency():
             df2.to_sql('df2', conn, index=False, if_exists='replace')
             query = 'insert into df select * from df2'
             c = conn.cursor()
+            #c.execute(query)
+            print('df')
+            query = 'select * from df LIMIT 1'
             c.execute(query)
+            row = c.fetchone()
+            print(row)
+            
+            print('df2')
+            query = 'select * from df2 LIMIT 1'
+            c.execute(query)
+            row = c.fetchone()
+            print(row)            
+
             conn.commit()
 
     def calculate_avg(self, curr_code, start_date, end_date):
