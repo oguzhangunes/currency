@@ -6,7 +6,7 @@ pipeline {
         stage('Build') {
             steps {
                 echo 'Building..'
-		sh 'python3 hellojenkins.py'
+		sh 'python3 currency.py'
             }
         }
 
