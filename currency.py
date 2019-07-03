@@ -214,7 +214,7 @@ def main():
     curr_obj_try = currency('TRY')      #creating a currency TRY based object with out date, it will create for 2 years.
     curr_obj_try.calculate_avg('JPY','2019-04-01', '2019-06-21') #base currensy TRY and print average of JPY
     curr_obj_try.calculate_avg('EUR','2019-04-01', '2019-06-21') #base currensy TRY and print average of EUR
-    print("test")
+    print("test1")
 if __name__ == '__main__':
 
     main()
