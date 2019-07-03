@@ -108,7 +108,7 @@ class currency():
 
             conn = sqlite3.connect(self.db_file)
             df2.to_sql('df2', conn, index=False, if_exists='replace')
-            query = 'insert into df select * from df2' #insert new data
+            query = 'select * from df2' #'insert into df select * from df2' #insert new data
             c = conn.cursor()
             c.execute(query)
             conn.commit()
@@ -164,6 +164,8 @@ class currency():
                     query = 'PRAGMA table_info(['+df+'])';#'insert into df select * from df2'
                     c = conn.cursor()
                     c.execute(query)
+                    rows = c.fethall()
+                    print(rows)
                     conn.commit()
 
             query = 'select "'+self.base_curr+'", avg("rates.'+curr_code+'") as avg_'+curr_code+' from df where "date" between "'+ start_date +'" and "'+end_date+'" group by "'+self.base_curr+'"'
