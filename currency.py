@@ -75,10 +75,6 @@ class currency():
             if row[1] > self.start_date.strftime('%Y-%m-%d'): #check min date
                 print("inserting required old data... " + row[1]+" " + self.start_date.strftime('%Y-%m-%d'))
                 self.insert_old_data(row[1], self.base_curr)
-            query = 'select * from df LIMIT 1'
-            c.execute(query)
-            row = c.fetchone()
-            print(row)
         else:
 
             day_count = (self.end_date - self.start_date).days
@@ -111,7 +107,7 @@ class currency():
 
             conn = sqlite3.connect(self.db_file)
             df2.to_sql('df2', conn, index=False, if_exists='replace')
-            query = 'select * from df2' #'insert into df select * from df2' #insert new data
+            query = 'insert into df select * from df2' #insert new data
             c = conn.cursor()
             c.execute(query)
             conn.commit()
@@ -130,12 +126,9 @@ class currency():
 
             conn = sqlite3.connect(self.db_file)
             df2.to_sql('df2', conn, index=False, if_exists='replace')
-            query = 'select * from df2' #'insert into df select * from df2'
+            query = 'insert into df select * from df2'
             c = conn.cursor()
             c.execute(query)
-            rows = c.fetchall()
-            for row in rows:
-                print(row)
             conn.commit()
 
     def calculate_avg(self, curr_code, start_date, end_date):
