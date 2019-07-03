@@ -75,7 +75,10 @@ class currency():
             if row[1] > self.start_date.strftime('%Y-%m-%d'): #check min date
                 print("inserting required old data... " + row[1]+" " + self.start_date.strftime('%Y-%m-%d'))
                 self.insert_old_data(row[1], self.base_curr)
-
+            query = 'select * from df LIMIT 1'
+            c.execute(query)
+            row = c.fetchone()
+            print(row)
         else:
 
             day_count = (self.end_date - self.start_date).days
@@ -164,10 +167,9 @@ class currency():
 
                     conn = sqlite3.connect(self.db_file)
                     df2.to_sql('df2', conn, index=False, if_exists='replace')
-                    query = 'PRAGMA table_info(['+df+'])';#'insert into df select * from df2'
+                    query = 'insert into df select * from df2'
                     c = conn.cursor()
                     c.execute(query)
-                    rows = c.fethall()
                     print(rows)
                     conn.commit()
 
