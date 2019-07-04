@@ -132,13 +132,18 @@ class currency():
             print('df')
             query = 'select * from df LIMIT 1'
             c.execute(query)
+            col_names = list(map(lambda x: x[0], c.description))
             row = c.fetchone()
+            print(col_names)
             print(row)
+            
             
             print('df2')
             query = 'select * from df2 LIMIT 1'
             c.execute(query)
+            col_names = list(map(lambda x: x[0], c.description))
             row = c.fetchone()
+            print(col_names)
             print(row)            
 
             conn.commit()
