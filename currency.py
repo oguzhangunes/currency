@@ -162,7 +162,7 @@ class currency():
             row = c.fetchone()
             if row[0] < end_date:  # check max date
                 print("inserting required new data... between " + row[0] + " " + end_date)
-                self.insert_new_data(row[0], self.base_curr)
+                self.insert_new_data(row[0])
             if row[1] > start_date:  # check min date
                 print("inserting required old data... between " + start_date + ' ' + row[1])
                 day_count = (self.start_date - datetime.strptime(start_date,'%Y-%m-%d').date()).days  # calculate number of days required to insert before start_date
@@ -210,7 +210,7 @@ class currency():
             c.execute(query)
             row = c.fetchone()
             if row[0] < date.today().strftime('%Y-%m-%d'):  # check max date
-                self.insert_new_data(date.today().strftime('%Y-%m-%d'), self.base_curr)
+                self.insert_new_data(date.today().strftime('%Y-%m-%d'))
             query = 'select "' + self.base_curr + '", "rates.' + curr_code + '" as ' + curr_code + ', "date" from df order by "date" desc limit 1'
 
             res = pd.read_sql(query, conn)
