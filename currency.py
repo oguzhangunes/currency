@@ -170,11 +170,11 @@ class currency():
                 df2 = pd.DataFrame()
                 if day_count > 0:
                     for i in range(0, day_count):
-                        """v_date = datetime.strptime(start_date, '%Y-%m-%d') + timedelta(days=i)
+                        """
+                        v_date = datetime.strptime(start_date, '%Y-%m-%d') + timedelta(days=i)
                         v_date = v_date.strftime('%Y-%m-%d')
                         url = self.main_url + v_date + '?base=' + self.base_curr
                         response = requests.get(url)  # requesting data
-            
                         df2 = self.append_df(df2, response.text)
                         """
                         df2 = self.df_request(df2,day_count)
@@ -195,8 +195,7 @@ class currency():
             print("1 " + self.base_curr + " is average " + avg_value + ' ' + curr_code + " in between " + start_date + " and " + end_date)
             # of course we can return this like a function.
 
-            print(self.get_col_names('df'))
-            print(self.get_col_names('df2'))
+
 
         else:
             sys.exit("please first check DB file or re-create currency Object")
@@ -229,7 +228,7 @@ class currency():
     def get_col_names(self, table_name):
         conn = sqlite3.connect(self.db_file)
         cursor = conn.execute('select * from '+table_name+' limit 1')
-        return list(map(lambda x: x[0], cursor.description))
+        print(list(map(lambda x: x[0], cursor.description)))
 
 def main():
     # here some example runs.
@@ -246,6 +245,8 @@ def main():
     curr_obj_try.calculate_avg('JPY', '2019-04-01', '2019-06-21')  # base currensy TRY and print average of JPY
     curr_obj_try.calculate_avg('EUR', '2019-04-01', '2019-06-21')  # base currensy TRY and print average of EUR
 
+    curr_obj_try.get_col_names('df')
+    curr_obj_try.get_col_names('df2')
 
 if __name__ == '__main__':
     main()
