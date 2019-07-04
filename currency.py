@@ -163,6 +163,7 @@ class currency():
             c = conn.cursor()
             c.execute(query)
             row = c.fetchone()
+            print(row)
             if row[0] < end_date:  # check max date
                 print("inserting required new data... between " + row[0] + " " + end_date)
                 self.insert_new_data(row[0], self.base_curr)
