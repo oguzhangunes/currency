@@ -52,7 +52,7 @@ class currency():
         if end_date is None:
             self.end_date = date.today()
         else:
-            self.end_date = datetime.strptime(end_date, '%Y-%m-%d')
+            self.end_date = datetime.strptime(end_date, '%Y-%m-%d').date()
 
         self.main_url = 'https://api.exchangeratesapi.io/'
         self.symbols = '&symbols=USD,GBP,TRY,AUD,EUR,JPY,CAD,CHF,SEK,PLN'
