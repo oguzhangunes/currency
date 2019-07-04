@@ -236,6 +236,7 @@ class currency():
 
     def df_request(self, df, v_date):
 
+        self.symbols = self.symbols.replace(','+self.base_curr, '')
         url = self.main_url + v_date + '?base=' + self.base_curr+self.symbols
         print (url)
         response = requests.get(url)  # requesting data
