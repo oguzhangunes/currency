@@ -56,7 +56,7 @@ class currency():
 
         self.main_url = 'https://api.exchangeratesapi.io/'
         self.symbols = '&symbols=USD,GBP,TRY,AUD,EUR,JPY,CAD,CHF,SEK,PLN'
-        num_symbols  = len(list(self.symbols.replace('&symbols=', '')))
+        num_symbols = len(self.symbols.replace('&symbols=', '').split(','))
         self.db_file = 'curr_db_' + self.base_curr + '.sqlite'
 
 
