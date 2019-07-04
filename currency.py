@@ -55,6 +55,7 @@ class currency():
             self.end_date = datetime.strptime(end_date, '%Y-%m-%d')
 
         self.main_url = 'https://api.exchangeratesapi.io/'
+        self.symbols = '&symbols=USD,GBP,TRY,AUD,EUR,JPY'
 
         self.db_file = 'curr_db_' + self.base_curr + '.sqlite'
 
@@ -163,7 +164,7 @@ class currency():
             c.execute(query)
             row = c.fetchone()
             if row[0] < end_date:  # check max date
-                print("inserting required new data... between" + row[0] + " " + end_date)
+                print("inserting required new data... between " + row[0] + " " + end_date)
                 self.insert_new_data(row[0], self.base_curr)
             if row[1] > start_date:  # check min date
                 print("inserting required old data... between " + start_date + ' ' + row[1])
@@ -231,7 +232,7 @@ class currency():
     def df_request(self, df, i):
         v_date = self.start_date + timedelta(days=i)
         v_date = v_date.strftime('%Y-%m-%d')
-        url = self.main_url + v_date + '?base=' + self.base_curr
+        url = self.main_url + v_date + '?base=' + self.base_curr+self.symbols
         response = requests.get(url)  # requesting data
         df = self.append_df(df, response.text)
         return df
