@@ -174,7 +174,7 @@ class currency():
                 self.insert_new_data(row[0], self.base_curr)
             if row[1] > start_date:  # check min date
                 print("inserting required old data... between " + start_date + ' ' + row[1])
-                day_count = (self.start_date - datetime.strptime(start_date,'%Y-%m-%d')).days  # calculate number of days required to insert before start_date
+                day_count = (self.start_date - datetime.strptime(start_date,'%Y-%m-%d').date()).days  # calculate number of days required to insert before start_date
                 df2 = pd.DataFrame()
                 if day_count > 0:
                     for i in range(0, day_count):
