@@ -117,7 +117,7 @@ class currency():
 
             print (query)
             c = conn.cursor()
-            c.execute(query)
+            #c.execute(query)
             conn.commit()
 
     def insert_old_data(self, begin_date, base_curr):
@@ -147,7 +147,7 @@ class currency():
 
             print (query)
             c = conn.cursor()
-            c.execute(query)
+            #c.execute(query)
 
             """
             print('df')
@@ -210,7 +210,7 @@ class currency():
 
                     print (query)
                     c = conn.cursor()
-                    c.execute(query)
+                    #c.execute(query)
                     conn.commit()
 
             query = 'select "' + self.base_curr + '", avg("rates.' + curr_code + '") as avg_' + curr_code + ' from df where "date" between "' + start_date + '" and "' + end_date + '" group by "' + self.base_curr + '"'
