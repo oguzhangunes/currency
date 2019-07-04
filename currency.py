@@ -249,7 +249,6 @@ def main():
     curr_obj_usd.get_last_rate('TRY')  # prints last rate of USD - TRY
 
     curr_obj_try = currency('TRY')  # creating a currency TRY based object with out date, it will create for 2 years.
-    curr_obj_try.calculate_avg('JPY', '2019-04-01')  # base currency TRY and print average of JPY
     curr_obj_try.calculate_avg('EUR', '2019-01-01','2019-07-03')  # base currency TRY and print average of EUR
     curr_obj_try.calculate_avg('USD', '2016-01-01','2016-07-03')  # base currency TRY and print average of EUR
 
