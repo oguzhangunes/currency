@@ -56,6 +56,7 @@ class currency():
 
         self.main_url = 'https://api.exchangeratesapi.io/'
         self.symbols = '&symbols=USD,GBP,TRY,AUD,EUR,JPY,CAD,CHF,SEK,PLN'
+        self.symbols = self.symbols.replace(',' + self.base_curr, '')
         num_symbols = len(self.symbols.replace('&symbols=', '').split(','))
         self.db_file = 'curr_db_' + self.base_curr + '.sqlite'
 
@@ -232,7 +233,7 @@ class currency():
 
     def df_request(self, df, v_date):
 
-        self.symbols = self.symbols.replace(','+self.base_curr, '')
+        
         url = self.main_url + v_date + '?base=' + self.base_curr+self.symbols
         response = requests.get(url)  # requesting data
         df = self.append_df(df, response.text)
