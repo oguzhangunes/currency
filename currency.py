@@ -106,9 +106,15 @@ class currency():
 
             conn = sqlite3.connect(self.db_file)
             df2.to_sql('df2', conn, index=False, if_exists='replace')
-            self.get_col_names('df')
-            self.get_col_names('df2')
-            query = 'insert into df select * from df2'  # insert new data
+
+            df_col_names, df_col_num = self.get_col_names('df')
+            df2_col_names, df2_col_num = self.get_col_names('df2')
+
+            if df_col_num < df2_col_num:
+                query = 'insert into df(' + df_col_names + ') select (' + df_col_names + ') from df2'
+            else:
+                query = 'insert into df(' + df2_col_names + ') select (' + df2_col_names + ') from df2'
+
             c = conn.cursor()
             c.execute(query)
             conn.commit()
@@ -129,9 +135,15 @@ class currency():
 
             conn = sqlite3.connect(self.db_file)
             df2.to_sql('df2', conn, index=False, if_exists='replace')
-            self.get_col_names('df')
-            self.get_col_names('df2')
-            query = 'insert into df select * from df2'
+
+            df_col_names, df_col_num = self.get_col_names('df')
+            df2_col_names, df2_col_num = self.get_col_names('df2')
+
+            if df_col_num < df2_col_num:
+                query = 'insert into df(' + df_col_names + ') select (' + df_col_names + ') from df2'
+            else:
+                query = 'insert into df(' + df2_col_names + ') select (' + df2_col_names + ') from df2'
+
             c = conn.cursor()
             c.execute(query)
 
@@ -186,13 +198,16 @@ class currency():
                     conn = sqlite3.connect(self.db_file)
                     df2.to_sql('df2', conn, index=False, if_exists='replace')
 
-                    self.get_col_names('df')
-                    self.get_col_names('df2')
+                    df_col_names, df_col_num = self.get_col_names('df')
+                    df2_col_names, df2_col_num = self.get_col_names('df2')
 
-                    query = 'insert into df select * from df2'
+                    if df_col_num<df2_col_num:
+                        query = 'insert into df('+df_col_names+') select ('+df_col_names+') from df2'
+                    else:
+                        query = 'insert into df(' + df2_col_names + ') select (' + df2_col_names + ') from df2'
+
                     c = conn.cursor()
                     c.execute(query)
-                    print(rows)
                     conn.commit()
 
             query = 'select "' + self.base_curr + '", avg("rates.' + curr_code + '") as avg_' + curr_code + ' from df where "date" between "' + start_date + '" and "' + end_date + '" group by "' + self.base_curr + '"'
@@ -240,7 +255,7 @@ class currency():
         str_col = " "
         for col in col_names:
             str_col = col+", "
-        print(str_col)
+        return str_col, len(col_names)
 
 def main():
     # here some example runs.
