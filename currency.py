@@ -77,14 +77,14 @@ class currency():
             df = pd.DataFrame()
             print("Creating First History for " + self.base_curr + " based data please wait." + " (" + self.start_date.strftime('%Y-%m-%d') + "-" + self.end_date.strftime('%Y-%m-%d') + ")")
             for i in range(0, day_count):
-                """
                 v_date = self.end_date - timedelta(days=i)
                 v_date = v_date.strftime('%Y-%m-%d')
+                """
                 url = self.main_url + v_date + '?base=' + self.base_curr
                 response = requests.get(url)  # requesting data
                 df2 = self.append_df(df, response.text)
                 """
-                df = self.df_request(df, -1*day_count)
+                df = self.df_request(df, v_date)
 
             conn = sqlite3.connect(self.db_file)
             df.to_sql('df', conn, index=False, if_exists='replace')
@@ -95,14 +95,15 @@ class currency():
         df2 = pd.DataFrame()
         if day_count > 0:
             for i in range(0, day_count):
-                """
+
                 v_date = date.today() - timedelta(days=i)
                 v_date = v_date.strftime('%Y-%m-%d')
+                """
                 url = self.main_url + v_date + '?base=' + self.base_curr
                 response = requests.get(url)  # requesting data
                 df2 = self.append_df(df2, response.text)
                 """
-                df2 = self.df_request(df2, -1*day_count)
+                df2 = self.df_request(df2, v_date)
 
 
             conn = sqlite3.connect(self.db_file)
@@ -128,14 +129,15 @@ class currency():
         df2 = pd.DataFrame()
         if day_count > 0:
             for i in range(0, day_count):
-                """
+
                 v_date = self.start_date + timedelta(days=i)
                 v_date = v_date.strftime('%Y-%m-%d')
+                """
                 url = self.main_url + v_date + '?base=' + self.base_curr
                 response = requests.get(url)  # requesting data
                 df2 = self.append_df(df2, response.text)
                 """
-                df2 = self.df_request(df2, day_count)
+                df2 = self.df_request(df2, v_date)
 
             conn = sqlite3.connect(self.db_file)
             df2.to_sql('df2', conn, index=False, if_exists='replace')
@@ -175,14 +177,14 @@ class currency():
                 df2 = pd.DataFrame()
                 if day_count > 0:
                     for i in range(0, day_count):
-                        """
                         v_date = datetime.strptime(start_date, '%Y-%m-%d') + timedelta(days=i)
                         v_date = v_date.strftime('%Y-%m-%d')
+                        """                     
                         url = self.main_url + v_date + '?base=' + self.base_curr
                         response = requests.get(url)  # requesting data
                         df2 = self.append_df(df2, response.text)
                         """
-                        df2 = self.df_request(df2, day_count)
+                        df2 = self.df_request(df2, v_date)
 
                     conn = sqlite3.connect(self.db_file)
                     df2.to_sql('df2', conn, index=False, if_exists='replace')
@@ -232,9 +234,8 @@ class currency():
             print('On date {}, 1 {} is {} {}'.format(res['date'].values[0], self.base_curr, last_value, curr_code))
             # of course we can return this like a function and use for calculations.
 
-    def df_request(self, df, i):
-        v_date = self.start_date + timedelta(days=i)
-        v_date = v_date.strftime('%Y-%m-%d')
+    def df_request(self, df, v_date):
+
         url = self.main_url + v_date + '?base=' + self.base_curr+self.symbols
         response = requests.get(url)  # requesting data
         df = self.append_df(df, response.text)
