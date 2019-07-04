@@ -102,7 +102,7 @@ class currency():
         print (day_count)
         if day_count > 0:
             for i in range(0, day_count):
-
+                print(i)
                 v_date = date.today() - timedelta(days=i)
                 v_date = v_date.strftime('%Y-%m-%d')
                 print (v_date)
