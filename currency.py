@@ -239,7 +239,7 @@ class currency():
         col_names = list(map(lambda x: x[0], cursor.description))
         str_col = " "
         for col in col_names:
-            str_col = col_names[col]+", "
+            str_col = col+", "
         print(str_col)
 
 def main():
