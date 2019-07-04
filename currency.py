@@ -45,7 +45,7 @@ class currency():
             self.base_curr = base_curr
 
         if start_date is None:
-            self.start_date = datetime.today() - timedelta(days=730)  # going back 2 years.
+            self.start_date = date.today() - timedelta(days=730)  # going back 2 years.
         else:
             self.start_date = datetime.strptime(start_date, '%Y-%m-%d')
 
@@ -122,6 +122,8 @@ class currency():
             conn.commit()
 
     def insert_old_data(self, begin_date, base_curr):
+        print(begin_date)
+        print(self.start_date)
         day_count = (datetime.strptime(begin_date,'%Y-%m-%d').date() - self.start_date).days  # calculate number of days required to insert before start_date
         df2 = pd.DataFrame()
         if day_count > 0:
