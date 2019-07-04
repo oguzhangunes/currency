@@ -234,6 +234,7 @@ def main():
     # here some example runs.
 
     curr_obj_eur = currency('EUR', '2019-01-01', '2019-06-21')  # creating a currency EUR based object with the dates in the parameters.
+    curr_obj_eur.get_col_names('df')
     curr_obj_eur.calculate_avg('USD', '2019-04-01', '2019-06-21')  # base currensy EUR average of USD
     curr_obj_eur.get_last_rate('AUD')  # prints last rate of EUR - AUD
 
