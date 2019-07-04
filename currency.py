@@ -111,9 +111,9 @@ class currency():
             df2_col_names, df2_col_num = self.get_col_names('df2')
 
             if df_col_num < df2_col_num:
-                query = 'insert into df(' + df_col_names + ') select (' + df_col_names + ') from df2'
+                query = 'insert into df(' + df_col_names + ') select ' + df_col_names + ' from df2'
             else:
-                query = 'insert into df(' + df2_col_names + ') select (' + df2_col_names + ') from df2'
+                query = 'insert into df(' + df2_col_names + ') select ' + df2_col_names + ' from df2'
 
             print (query)
             c = conn.cursor()
@@ -141,9 +141,9 @@ class currency():
             df2_col_names, df2_col_num = self.get_col_names('df2')
 
             if df_col_num < df2_col_num:
-                query = 'insert into df(' + df_col_names + ') select (' + df_col_names + ') from df2'
+                query = 'insert into df(' + df_col_names + ') select ' + df_col_names + ' from df2'
             else:
-                query = 'insert into df(' + df2_col_names + ') select (' + df2_col_names + ') from df2'
+                query = 'insert into df(' + df2_col_names + ') select ' + df2_col_names + ' from df2'
 
             print (query)
             c = conn.cursor()
@@ -204,9 +204,9 @@ class currency():
                     df2_col_names, df2_col_num = self.get_col_names('df2')
 
                     if df_col_num<df2_col_num:
-                        query = 'insert into df('+df_col_names+') select ('+df_col_names+') from df2'
+                        query = 'insert into df('+df_col_names+') select '+df_col_names+' from df2'
                     else:
-                        query = 'insert into df(' + df2_col_names + ') select (' + df2_col_names + ') from df2'
+                        query = 'insert into df(' + df2_col_names + ') select ' + df2_col_names + ' from df2'
 
                     print (query)
                     c = conn.cursor()
