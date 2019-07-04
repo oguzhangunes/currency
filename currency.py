@@ -135,6 +135,7 @@ class currency():
                 df2 = self.df_request(df2, v_date)
 
             conn = sqlite3.connect(self.db_file)
+            print (df2)
             df2.to_sql('df2', conn, index=False, if_exists='replace')
 
             df_col_names, df_col_num = self.get_col_names('df')
