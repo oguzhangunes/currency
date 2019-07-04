@@ -115,6 +115,7 @@ class currency():
             else:
                 query = 'insert into df(' + df2_col_names + ') select (' + df2_col_names + ') from df2'
 
+            print (query)
             c = conn.cursor()
             c.execute(query)
             conn.commit()
@@ -144,6 +145,7 @@ class currency():
             else:
                 query = 'insert into df(' + df2_col_names + ') select (' + df2_col_names + ') from df2'
 
+            print (query)
             c = conn.cursor()
             c.execute(query)
 
@@ -206,6 +208,7 @@ class currency():
                     else:
                         query = 'insert into df(' + df2_col_names + ') select (' + df2_col_names + ') from df2'
 
+                    print (query)
                     c = conn.cursor()
                     c.execute(query)
                     conn.commit()
