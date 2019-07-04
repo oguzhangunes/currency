@@ -258,9 +258,9 @@ class currency():
         str_col = ""
         for col in range(0, len(col_names)):
             if col == 0:
-                str_col = col_names[col]
+                str_col = '"'+col_names[col]+'"'
             else:
-                str_col = str_col+','+col_names[col]
+                str_col = str_col+', '+'"'+col_names[col]+'"'
         return str_col, len(col_names)
 
 def main():
