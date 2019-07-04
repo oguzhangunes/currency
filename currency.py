@@ -117,7 +117,7 @@ class currency():
 
             print (query)
             c = conn.cursor()
-            #c.execute(query)
+            c.execute(query)
             conn.commit()
 
     def insert_old_data(self, begin_date, base_curr):
@@ -147,7 +147,7 @@ class currency():
 
             print (query)
             c = conn.cursor()
-            #c.execute(query)
+            c.execute(query)
 
             """
             print('df')
@@ -210,7 +210,7 @@ class currency():
 
                     print (query)
                     c = conn.cursor()
-                    #c.execute(query)
+                    c.execute(query)
                     conn.commit()
 
             query = 'select "' + self.base_curr + '", avg("rates.' + curr_code + '") as avg_' + curr_code + ' from df where "date" between "' + start_date + '" and "' + end_date + '" group by "' + self.base_curr + '"'
@@ -255,9 +255,12 @@ class currency():
         conn = sqlite3.connect(self.db_file)
         cursor = conn.execute('select * from '+table_name+' limit 1')
         col_names = list(map(lambda x: x[0], cursor.description))
-        str_col = " "
-        for col in col_names:
-            str_col = col+", "
+        str_col = ""
+        for col in range(0, len(col_names)):
+            if col == 0:
+                str_col = col_names[col]
+            else:
+                str_col = str_col+','+col_names[col]
         return str_col, len(col_names)
 
 def main():
