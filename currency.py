@@ -236,7 +236,11 @@ class currency():
     def get_col_names(self, table_name):
         conn = sqlite3.connect(self.db_file)
         cursor = conn.execute('select * from '+table_name+' limit 1')
-        print(map(lambda x: x[0], cursor.description))
+        col_names = list(map(lambda x: x[0], cursor.description))
+        str_col = " "
+        for col in col_names:
+            str_col = col_names[col]+", "
+        print str_col
 
 def main():
     # here some example runs.
