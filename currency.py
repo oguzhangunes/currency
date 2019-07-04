@@ -55,7 +55,7 @@ class currency():
             self.end_date = datetime.strptime(end_date, '%Y-%m-%d')
 
         self.main_url = 'https://api.exchangeratesapi.io/'
-        self.symbols = '&symbols=USD,GBP,TRY,AUD,EUR,JPY'
+        self.symbols = '&symbols=USD,GBP,TRY,AUD,EUR,JPY,CAD,CHF,SEK,PLN'
 
         self.db_file = 'curr_db_' + self.base_curr + '.sqlite'
 
@@ -79,11 +79,6 @@ class currency():
             for i in range(0, day_count):
                 v_date = self.end_date - timedelta(days=i)
                 v_date = v_date.strftime('%Y-%m-%d')
-                """
-                url = self.main_url + v_date + '?base=' + self.base_curr
-                response = requests.get(url)  # requesting data
-                df2 = self.append_df(df, response.text)
-                """
                 df = self.df_request(df, v_date)
 
             conn = sqlite3.connect(self.db_file)
@@ -98,11 +93,6 @@ class currency():
 
                 v_date = date.today() - timedelta(days=i)
                 v_date = v_date.strftime('%Y-%m-%d')
-                """
-                url = self.main_url + v_date + '?base=' + self.base_curr
-                response = requests.get(url)  # requesting data
-                df2 = self.append_df(df2, response.text)
-                """
                 df2 = self.df_request(df2, v_date)
 
 
@@ -117,14 +107,11 @@ class currency():
             else:
                 query = 'insert into df(' + df2_col_names + ') select ' + df2_col_names + ' from df2'
 
-            print (query)
             c = conn.cursor()
             c.execute(query)
             conn.commit()
 
     def insert_old_data(self, begin_date, base_curr):
-        print(begin_date)
-        print(self.start_date)
         day_count = (datetime.strptime(begin_date,'%Y-%m-%d').date() - self.start_date).days  # calculate number of days required to insert before start_date
         df2 = pd.DataFrame()
         if day_count > 0:
@@ -132,11 +119,6 @@ class currency():
 
                 v_date = self.start_date + timedelta(days=i)
                 v_date = v_date.strftime('%Y-%m-%d')
-                """
-                url = self.main_url + v_date + '?base=' + self.base_curr
-                response = requests.get(url)  # requesting data
-                df2 = self.append_df(df2, response.text)
-                """
                 df2 = self.df_request(df2, v_date)
 
             conn = sqlite3.connect(self.db_file)
@@ -149,8 +131,6 @@ class currency():
                 query = 'insert into df(' + df_col_names + ') select ' + df_col_names + ' from df2'
             else:
                 query = 'insert into df(' + df2_col_names + ') select ' + df2_col_names + ' from df2'
-
-            print (query)
             c = conn.cursor()
             c.execute(query)
 
@@ -167,7 +147,6 @@ class currency():
             c = conn.cursor()
             c.execute(query)
             row = c.fetchone()
-            print(row)
             if row[0] < end_date:  # check max date
                 print("inserting required new data... between " + row[0] + " " + end_date)
                 self.insert_new_data(row[0], self.base_curr)
@@ -179,11 +158,6 @@ class currency():
                     for i in range(0, day_count):
                         v_date = datetime.strptime(start_date, '%Y-%m-%d') + timedelta(days=i)
                         v_date = v_date.strftime('%Y-%m-%d')
-                        """                     
-                        url = self.main_url + v_date + '?base=' + self.base_curr
-                        response = requests.get(url)  # requesting data
-                        df2 = self.append_df(df2, response.text)
-                        """
                         df2 = self.df_request(df2, v_date)
 
                     conn = sqlite3.connect(self.db_file)
@@ -197,7 +171,6 @@ class currency():
                     else:
                         query = 'insert into df(' + df2_col_names + ') select ' + df2_col_names + ' from df2'
 
-                    print (query)
                     c = conn.cursor()
                     c.execute(query)
                     conn.commit()
@@ -205,7 +178,6 @@ class currency():
             query = 'select "' + self.base_curr + '", avg("rates.' + curr_code + '") as avg_' + curr_code + ' from df where "date" between "' + start_date + '" and "' + end_date + '" group by "' + self.base_curr + '"'
 
             res = pd.read_sql(query, conn)
-            print (res)
             avg_value = str(res['avg_' + curr_code].values[0])
 
             print("1 " + self.base_curr + " is average " + avg_value + ' ' + curr_code + " in between " + start_date + " and " + end_date)
@@ -238,7 +210,6 @@ class currency():
 
         self.symbols = self.symbols.replace(','+self.base_curr, '')
         url = self.main_url + v_date + '?base=' + self.base_curr+self.symbols
-        print (url)
         response = requests.get(url)  # requesting data
         df = self.append_df(df, response.text)
         return df
@@ -271,8 +242,7 @@ def main():
     curr_obj_try.calculate_avg('JPY', '2019-04-01', '2019-06-21')  # base currency TRY and print average of JPY
     curr_obj_try.calculate_avg('EUR', '2019-04-01', '2019-06-21')  # base currency TRY and print average of EUR
 
-    #curr_obj_try.get_col_names('df')
-    #curr_obj_try.get_col_names('df2')
+
 
 if __name__ == '__main__':
     main()
