@@ -246,7 +246,7 @@ def main():
     curr_obj_try.calculate_avg('EUR', '2019-04-01', '2019-06-21')  # base currensy TRY and print average of EUR
 
     curr_obj_try.get_col_names('df')
-    curr_obj_try.get_col_names('df2')
+    #curr_obj_try.get_col_names('df2')
 
 if __name__ == '__main__':
     main()
