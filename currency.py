@@ -79,7 +79,6 @@ class currency():
             for i in range(0, day_count):
                 v_date = self.end_date - timedelta(days=i)
                 v_date = v_date.strftime('%Y-%m-%d')
-                print (v_date)
                 """
                 url = self.main_url + v_date + '?base=' + self.base_curr
                 response = requests.get(url)  # requesting data
@@ -238,6 +237,7 @@ class currency():
     def df_request(self, df, v_date):
 
         url = self.main_url + v_date + '?base=' + self.base_curr+self.symbols
+        print (url)
         response = requests.get(url)  # requesting data
         df = self.append_df(df, response.text)
         return df
