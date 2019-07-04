@@ -99,21 +99,20 @@ class currency():
     def insert_new_data(self, begin_date):
         day_count = (datetime.today() - datetime.strptime(begin_date,'%Y-%m-%d')).days  # calculate number of days required to insert after start_date
         df2 = pd.DataFrame()
-        print (day_count)
         if day_count > 0:
             for i in range(0, day_count):
 
                 v_date = date.today() - timedelta(days=i)
                 v_date = v_date.strftime('%Y-%m-%d')
-                print (v_date)
                 df2 = self.df_request(df2, v_date)
 
-            print (df2)
             conn = sqlite3.connect(self.db_file)
             df2.to_sql('df2', conn, index=False, if_exists='replace')
-
+            self.clean_df()
             df_col_names, df_col_num = self.get_col_names('df')
             df2_col_names, df2_col_num = self.get_col_names('df2')
+
+
 
             if df_col_num < df2_col_num:
                 query = 'insert into df(' + df_col_names + ') select ' + df_col_names + ' from df2'
@@ -136,6 +135,8 @@ class currency():
 
             conn = sqlite3.connect(self.db_file)
             df2.to_sql('df2', conn, index=False, if_exists='replace')
+
+            self.clean_df()
 
             df_col_names, df_col_num = self.get_col_names('df')
             df2_col_names, df2_col_num = self.get_col_names('df2')
@@ -175,6 +176,7 @@ class currency():
 
                     conn = sqlite3.connect(self.db_file)
                     df2.to_sql('df2', conn, index=False, if_exists='replace')
+                    self.clean_df()
 
                     df_col_names, df_col_num = self.get_col_names('df')
                     df2_col_names, df2_col_num = self.get_col_names('df2')
@@ -223,7 +225,6 @@ class currency():
 
 
         url = self.main_url + v_date + '?base=' + self.base_curr+self.symbols
-        print (url)
         response = requests.get(url)  # requesting data
         df = self.append_df(df, response.text)
         return df
@@ -239,6 +240,12 @@ class currency():
             else:
                 str_col = str_col+', '+'"'+col_names[col]+'"'
         return str_col, len(col_names)
+
+    def clean_df(self):
+        conn = sqlite3.connect(self.db_file)
+        conn.execute('delete from df where date in (select date from df2)')
+        conn.commit()
+
 
 def main():
     # here some example runs.
