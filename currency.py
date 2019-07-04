@@ -65,6 +65,8 @@ class currency():
             conn = sqlite3.connect(self.db_file)
             c = conn.cursor()
             df_col_names, df_col_num = self.get_col_names('df')
+            print (num_symbols)
+            print (df_col_num)
             if num_symbols+2 == df_col_num:
                 query = 'select max("date") as max_date, min("date") as min_date from df'
                 c.execute(query)
