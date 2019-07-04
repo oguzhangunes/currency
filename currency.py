@@ -83,7 +83,7 @@ class currency():
                 response = requests.get(url)  # requesting data
                 df2 = self.append_df(df, response.text)
                 """
-                df2 = self.df_request(df2, -1*day_count)
+                df = self.df_request(df, -1*day_count)
 
             conn = sqlite3.connect(self.db_file)
             df.to_sql('df', conn, index=False, if_exists='replace')
@@ -177,7 +177,7 @@ class currency():
                         response = requests.get(url)  # requesting data
                         df2 = self.append_df(df2, response.text)
                         """
-                        df2 = self.df_request(df2,day_count)
+                        df2 = self.df_request(df2, day_count)
 
                     conn = sqlite3.connect(self.db_file)
                     df2.to_sql('df2', conn, index=False, if_exists='replace')
