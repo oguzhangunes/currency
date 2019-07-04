@@ -240,7 +240,7 @@ class currency():
         str_col = " "
         for col in col_names:
             str_col = col_names[col]+", "
-        print str_col
+        print(str_col)
 
 def main():
     # here some example runs.
