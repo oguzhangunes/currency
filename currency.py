@@ -56,23 +56,30 @@ class currency():
 
         self.main_url = 'https://api.exchangeratesapi.io/'
         self.symbols = '&symbols=USD,GBP,TRY,AUD,EUR,JPY,CAD,CHF,SEK,PLN'
-
+        num_symbols  = len(list(self.symbols.replace('&symbols=', '')))
         self.db_file = 'curr_db_' + self.base_curr + '.sqlite'
+
+
 
         if os.path.exists(self.db_file) and os.path.getsize(self.db_file) > 0:
             conn = sqlite3.connect(self.db_file)
             c = conn.cursor()
-            query = 'select max("date") as max_date, min("date") as min_date from df'
-            c.execute(query)
-            row = c.fetchone()
-            if row[0] < self.end_date.strftime('%Y-%m-%d'):  # check max date
-                print("inserting required new data... " + row[0] + " " + self.end_date.strftime('%Y-%m-%d'))
-                self.insert_new_data(row[0], self.base_curr)
-            if row[1] > self.start_date.strftime('%Y-%m-%d'):  # check min date
-                print("inserting required old data... " + row[1] + " " + self.start_date.strftime('%Y-%m-%d'))
-                self.insert_old_data(row[1], self.base_curr)
+            df_col_names, df_col_num = self.get_col_names('df')
+            if num_symbols+2 == df_col_num:
+                query = 'select max("date") as max_date, min("date") as min_date from df'
+                c.execute(query)
+                row = c.fetchone()
+                if row[0] < self.end_date.strftime('%Y-%m-%d'):  # check max date
+                    print("inserting required new data... " + row[0] + " " + self.end_date.strftime('%Y-%m-%d'))
+                    self.insert_new_data(row[0], self.base_curr)
+                if row[1] > self.start_date.strftime('%Y-%m-%d'):  # check min date
+                    print("inserting required old data... " + row[1] + " " + self.start_date.strftime('%Y-%m-%d'))
+                    self.insert_old_data(row[1], self.base_curr)
+            else:
+                self.create_first_history()
         else:
-
+            self.create_first_history()
+            """
             day_count = (self.end_date - self.start_date).days
             df = pd.DataFrame()
             print("Creating First History for " + self.base_curr + " based data please wait." + " (" + self.start_date.strftime('%Y-%m-%d') + "-" + self.end_date.strftime('%Y-%m-%d') + ")")
@@ -84,6 +91,21 @@ class currency():
             conn = sqlite3.connect(self.db_file)
             df.to_sql('df', conn, index=False, if_exists='replace')
             print('{} based currency table created'.format(self.base_curr))
+            """
+
+    def create_first_history(self):
+        day_count = (self.end_date - self.start_date).days
+        df = pd.DataFrame()
+        print("Creating First History for " + self.base_curr + " based data please wait." + " (" + self.start_date.strftime('%Y-%m-%d') + "-" + self.end_date.strftime('%Y-%m-%d') + ")")
+        for i in range(0, day_count):
+            v_date = self.end_date - timedelta(days=i)
+            v_date = v_date.strftime('%Y-%m-%d')
+            df = self.df_request(df, v_date)
+
+        conn = sqlite3.connect(self.db_file)
+        df.to_sql('df', conn, index=False, if_exists='replace')
+        print('{} based currency table created'.format(self.base_curr))
+
 
     def insert_new_data(self, begin_date, base_curr):
         day_count = (datetime.today() - datetime.strptime(begin_date,'%Y-%m-%d')).days  # calculate number of days required to insert after start_date
