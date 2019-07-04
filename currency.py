@@ -47,7 +47,7 @@ class currency():
         if start_date is None:
             self.start_date = date.today() - timedelta(days=730)  # going back 2 years.
         else:
-            self.start_date = datetime.strptime(start_date, '%Y-%m-%d')
+            self.start_date = datetime.strptime(start_date, '%Y-%m-%d').date()
 
         if end_date is None:
             self.end_date = date.today()
