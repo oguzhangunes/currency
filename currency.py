@@ -216,6 +216,7 @@ class currency():
             query = 'select "' + self.base_curr + '", avg("rates.' + curr_code + '") as avg_' + curr_code + ' from df where "date" between "' + start_date + '" and "' + end_date + '" group by "' + self.base_curr + '"'
 
             res = pd.read_sql(query, conn)
+            print (res)
             avg_value = str(res['avg_' + curr_code].values[0])
 
             print("1 " + self.base_curr + " is average " + avg_value + ' ' + curr_code + " in between " + start_date + " and " + end_date)
