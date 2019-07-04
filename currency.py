@@ -68,33 +68,21 @@ class currency():
             df_col_names, df_col_num = self.get_col_names('df')
             print (num_symbols)
             print (df_col_num)
-            if num_symbols+2 == df_col_num:
+            if num_symbols+2 == df_col_num: #if there is no change in symbols data
                 query = 'select max("date") as max_date, min("date") as min_date from df'
                 c.execute(query)
                 row = c.fetchone()
                 if row[0] < self.end_date.strftime('%Y-%m-%d'):  # check max date
                     print("inserting required new data... " + row[0] + " " + self.end_date.strftime('%Y-%m-%d'))
-                    self.insert_new_data(row[0], self.base_curr)
+                    self.insert_new_data(row[0])
                 if row[1] > self.start_date.strftime('%Y-%m-%d'):  # check min date
                     print("inserting required old data... " + row[1] + " " + self.start_date.strftime('%Y-%m-%d'))
-                    self.insert_old_data(row[1], self.base_curr)
-            else:
+                    self.insert_old_data(row[1])
+            else: #if there is a change in symbols data, re create history
                 self.create_first_history()
-        else:
+        else: #if there is no valid DB file, create history
             self.create_first_history()
-            """
-            day_count = (self.end_date - self.start_date).days
-            df = pd.DataFrame()
-            print("Creating First History for " + self.base_curr + " based data please wait." + " (" + self.start_date.strftime('%Y-%m-%d') + "-" + self.end_date.strftime('%Y-%m-%d') + ")")
-            for i in range(0, day_count):
-                v_date = self.end_date - timedelta(days=i)
-                v_date = v_date.strftime('%Y-%m-%d')
-                df = self.df_request(df, v_date)
 
-            conn = sqlite3.connect(self.db_file)
-            df.to_sql('df', conn, index=False, if_exists='replace')
-            print('{} based currency table created'.format(self.base_curr))
-            """
 
     def create_first_history(self):
         day_count = (self.end_date - self.start_date).days
@@ -110,7 +98,7 @@ class currency():
         print('{} based currency table created'.format(self.base_curr))
 
 
-    def insert_new_data(self, begin_date, base_curr):
+    def insert_new_data(self, begin_date):
         day_count = (datetime.today() - datetime.strptime(begin_date,'%Y-%m-%d')).days  # calculate number of days required to insert after start_date
         df2 = pd.DataFrame()
         if day_count > 0:
@@ -136,7 +124,7 @@ class currency():
             c.execute(query)
             conn.commit()
 
-    def insert_old_data(self, begin_date, base_curr):
+    def insert_old_data(self, begin_date):
         day_count = (datetime.strptime(begin_date,'%Y-%m-%d').date() - self.start_date).days  # calculate number of days required to insert before start_date
         df2 = pd.DataFrame()
         if day_count > 0:
@@ -233,7 +221,7 @@ class currency():
 
     def df_request(self, df, v_date):
 
-        
+
         url = self.main_url + v_date + '?base=' + self.base_curr+self.symbols
         response = requests.get(url)  # requesting data
         df = self.append_df(df, response.text)
