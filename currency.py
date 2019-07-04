@@ -99,11 +99,13 @@ class currency():
     def insert_new_data(self, begin_date):
         day_count = (datetime.today() - datetime.strptime(begin_date,'%Y-%m-%d')).days  # calculate number of days required to insert after start_date
         df2 = pd.DataFrame()
+        print (day_count)
         if day_count > 0:
             for i in range(0, day_count):
 
                 v_date = date.today() - timedelta(days=i)
                 v_date = v_date.strftime('%Y-%m-%d')
+                print (v_date)
                 df2 = self.df_request(df2, v_date)
 
 
@@ -249,8 +251,9 @@ def main():
     curr_obj_usd.get_last_rate('TRY')  # prints last rate of USD - TRY
 
     curr_obj_try = currency('TRY')  # creating a currency TRY based object with out date, it will create for 2 years.
-    curr_obj_try.calculate_avg('EUR', '2019-01-01','2019-07-03')  # base currency TRY and print average of EUR
-    curr_obj_try.calculate_avg('USD', '2016-01-01','2016-07-03')  # base currency TRY and print average of EUR
+    curr_obj_try.calculate_avg('JPY', '2019-04-01', '2019-06-21')  # base currency TRY and print average of JPY
+    curr_obj_try.calculate_avg('EUR', '2019-04-01', '2019-06-21')  # base currency TRY and print average of EUR
+
 
 
 if __name__ == '__main__':
