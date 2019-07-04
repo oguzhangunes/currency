@@ -64,7 +64,7 @@ class currency():
             c = conn.cursor()
             query = 'select max("date") as max_date, min("date") as min_date from df'
             c.execute(query)
-            row = c.fetchall()
+            row = c.fetchone()
             if row[0] < self.end_date.strftime('%Y-%m-%d'):  # check max date
                 print("inserting required new data... " + row[0] + " " + self.end_date.strftime('%Y-%m-%d'))
                 self.insert_new_data(row[0], self.base_curr)
