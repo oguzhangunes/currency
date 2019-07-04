@@ -236,7 +236,7 @@ class currency():
     def get_col_names(self, table_name):
         conn = sqlite3.connect(self.db_file)
         cursor = conn.execute('select * from '+table_name+' limit 1')
-        print(list(map(lambda x: x[0], cursor.description)))
+        print(map(lambda x: x[0], cursor.description))
 
 def main():
     # here some example runs.
