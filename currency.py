@@ -106,6 +106,8 @@ class currency():
 
             conn = sqlite3.connect(self.db_file)
             df2.to_sql('df2', conn, index=False, if_exists='replace')
+            self.get_col_names('df')
+            self.get_col_names('df2')
             query = 'insert into df select * from df2'  # insert new data
             c = conn.cursor()
             c.execute(query)
@@ -127,6 +129,8 @@ class currency():
 
             conn = sqlite3.connect(self.db_file)
             df2.to_sql('df2', conn, index=False, if_exists='replace')
+            self.get_col_names('df')
+            self.get_col_names('df2')
             query = 'insert into df select * from df2'
             c = conn.cursor()
             c.execute(query)
@@ -181,6 +185,10 @@ class currency():
 
                     conn = sqlite3.connect(self.db_file)
                     df2.to_sql('df2', conn, index=False, if_exists='replace')
+
+                    self.get_col_names('df')
+                    self.get_col_names('df2')
+
                     query = 'insert into df select * from df2'
                     c = conn.cursor()
                     c.execute(query)
@@ -234,19 +242,19 @@ def main():
     # here some example runs.
 
     curr_obj_eur = currency('EUR', '2019-01-01', '2019-06-21')  # creating a currency EUR based object with the dates in the parameters.
-    curr_obj_eur.get_col_names('df')
-    curr_obj_eur.calculate_avg('USD', '2019-04-01', '2019-06-21')  # base currensy EUR average of USD
+
+    curr_obj_eur.calculate_avg('USD', '2019-04-01', '2019-06-21')  # base currency EUR average of USD
     curr_obj_eur.get_last_rate('AUD')  # prints last rate of EUR - AUD
 
     curr_obj_usd = currency('USD', '2019-04-01', '2019-06-21')  # creating a currency USA based object with the dates in the parameters.
-    curr_obj_usd.calculate_avg('EUR', '2019-02-01', '2019-06-21')  # base currensy USD and print average of EUR
+    curr_obj_usd.calculate_avg('EUR', '2019-02-01', '2019-06-21')  # base currency USD and print average of EUR
     curr_obj_usd.get_last_rate('TRY')  # prints last rate of USD - TRY
 
     curr_obj_try = currency('TRY')  # creating a currency TRY based object with out date, it will create for 2 years.
-    curr_obj_try.calculate_avg('JPY', '2019-04-01', '2019-06-21')  # base currensy TRY and print average of JPY
-    curr_obj_try.calculate_avg('EUR', '2019-04-01', '2019-06-21')  # base currensy TRY and print average of EUR
+    curr_obj_try.calculate_avg('JPY', '2019-04-01', '2019-06-21')  # base currency TRY and print average of JPY
+    curr_obj_try.calculate_avg('EUR', '2019-04-01', '2019-06-21')  # base currency TRY and print average of EUR
 
-    curr_obj_try.get_col_names('df')
+    #curr_obj_try.get_col_names('df')
     #curr_obj_try.get_col_names('df2')
 
 if __name__ == '__main__':
